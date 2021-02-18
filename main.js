@@ -10,4 +10,4 @@ const { PORT } = process.env
 app.use(bodyParser.json())
 app.use(webhook)
 
-app.listen(PORT, () => console.log('Ecoute le port', PORT, '...'))
+app.listen(PORT || 1337, () => console.log('Ecoute le port', PORT, '...'))
