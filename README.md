@@ -5,6 +5,8 @@ bot de test
 
 ## dotenv (.env)
 ```
-VERIFY_TOKEN=quelquechose_de_secret
+VERIFY_TOKEN=une_chaine_de_caractere
+ACCESS_TOKEN=token_facbook_app
+SECRET=secret_facebook_app
 PORT=1337
 ```

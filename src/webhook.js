@@ -1,4 +1,5 @@
 const app = require('express').Router()
+const { handleMessage, handlePostback } = require('./handler')
 require('dotenv').config()
 
 app.post('/webhook', (req, res) => {
@@ -7,7 +8,12 @@ app.post('/webhook', (req, res) => {
     if (object === 'page') {
         entry.forEach(elem => {
             const webhook_event = elem.messaging[0]
-            console.log(webhook_event)
+            const sender_psid = webhook_event.sender.id
+
+            if (webhook_event.message) 
+                handleMessage(sender_psid, webhook_event.message)
+            else if (webhook_event.postback)
+                handlePostback(sender_psid, webhook_event.postback)
         })
         res.status(200).send('EVENT_RECEIVED')
     }
