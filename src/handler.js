@@ -7,7 +7,7 @@ const handleMessage = (sender_psid, received_msg) => {
     let response
     if (received_msg.text) {
         response = {
-            "text" : `You sent the message: "${received_message.text}". Now send me an image!`
+            "text" : `You sent the message: "${received_msg.text}". Now send me an image!`
         }
     }
     callSendAPI(sender_psid, response)
