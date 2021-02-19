@@ -1,38 +1,35 @@
 const request = require('request')
+const { match } = require('./utils')
 require('dotenv').config()
 
 const { ACCESS_TOKEN } = process.env
 
 const handleMessage = (sender_psid, received_msg) => {
     let response
-    if (received_msg.text) {
+
+    if (received_msg.text === 'Comment vas-tu ?') {
         response = {
-            text : `tu a evoyer : "${received_msg.text}". Now send me an image!`
+            text : 'Très bien et vous ?',
+            quick_replies :  [{
+                content_type : 'text',
+                title : 'Je vais bien merci',
+                payload : 'good'
+            },
+            {
+                content_type : 'text',
+                title : 'Non, ça ne va pas',
+                payload : 'notgood'
+            }]
         }
     }
     else if (received_msg.attachments) {
         response = {
-            attachment: {
-                type: "template",
-                payload: {
-                    template_type: "generic",
-                    elements: [{
-                        title: "c'est la bonne image ?",
-                        subtitle: "click pour répondre.",
-                        image_url: received_msg.attachments[0].payload.url,
-                        buttons: [{
-                            type: "postback",
-                            title: "Oui!",
-                            payload: "oui",
-                        },
-                        {
-                            type: "postback",
-                            title: "Non!",
-                            payload: "non",
-                        }],
-                    }]
-                }
-            }
+            text : 'Je ne sais pas traier ce type de demande'
+        }
+    }
+    else {
+        response = {
+            text : received_msg.text
         }
     }
 
@@ -40,13 +37,16 @@ const handleMessage = (sender_psid, received_msg) => {
 }
 
 const handlePostback = (sender_psid, received_postback) => {
-    let response
     const { payload } = received_postback
-
-    if (payload === 'oui')
-        response = { text : 'Merci' }
-    else if (payload === 'non')
-        response = { text : 'nan tu mens' }
+    
+    const response = match(payload)
+    .case('good', () => ({ 
+        text : "c'est parfait"
+    }))
+    .case('notgood', () => ({ 
+        text : "dommage"
+    }))
+    .default(() => null)
     
     callSendAPI(sender_psid, response)
 }
