@@ -11,7 +11,6 @@ const handleMessage = (sender_psid, received_msg) => {
         }
     }
     else if (received_msg.attachments) {
-        let attachment_url = received_msg.attachments[0].payload.url
         response = {
             type : 'template',
             payload : {
@@ -19,17 +18,17 @@ const handleMessage = (sender_psid, received_msg) => {
                 elements : [{
                     title : "c'est la bonne image ?",
                     subtitle : 'click pour répondre',
-                    image_url : attachment_url,
+                    image_url : received_msg.attachments[0].payload.url,
                     buttons : [{
                         type : 'postback',
                         title : 'Oui',
-                        payload : 'oui'
+                        payload : 'oui',
                     }, 
                     {
                         type : 'postback',
                         title : 'Non',
-                        payload : 'non'
-                    }]
+                        payload : 'non',
+                    }],
                 }]
             }
         }
