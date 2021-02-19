@@ -11,48 +11,25 @@ const handleMessage = (sender_psid, received_msg) => {
         }
     }
     else if (received_msg.attachments) {
-        /*response = {
-            type : 'template',
-            payload : {
-                template_type : 'generic',
-                elements : [{
-                    title : "c'est la bonne image ?",
-                    subtitle : 'click pour répondre',
-                    image_url : received_msg.attachments[0].payload.url,
-                    buttons : [{
-                        type : 'postback',
-                        title : 'Oui',
-                        payload : 'oui',
-                    }, 
-                    {
-                        type : 'postback',
-                        title : 'Non',
-                        payload : 'non',
-                    }],
-                }]
-            }
-        }*/
         response = {
-            "attachment": {
-                "type": "template",
-                "payload": {
-                    "template_type": "generic",
-                    "elements": [{
-                        "title": "Is this the right picture?",
-                        "subtitle": "Tap a button to answer.",
-                        "image_url": received_msg.attachments[0].payload.url,
-                        "buttons": [
-                        {
-                            "type": "postback",
-                            "title": "Yes!",
-                            "payload": "yes",
+            attachment: {
+                type: "template",
+                payload: {
+                    template_type: "generic",
+                    elements: [{
+                        title: "c'est la bonne image ?",
+                        subtitle: "click pour répondre.",
+                        image_url: received_msg.attachments[0].payload.url,
+                        buttons: [{
+                            type: "postback",
+                            title: "Oui!",
+                            payload: "oui",
                         },
                         {
-                            "type": "postback",
-                            "title": "No!",
-                            "payload": "no",
-                        }
-                        ],
+                            type: "postback",
+                            title: "Non!",
+                            payload: "non",
+                        }],
                     }]
                 }
             }
@@ -63,7 +40,15 @@ const handleMessage = (sender_psid, received_msg) => {
 }
 
 const handlePostback = (sender_psid, received_postback) => {
+    let response
+    const { payload } = received_postback
 
+    if (payload === 'oui')
+        response = { text : 'Merci' }
+    else if (payload === 'non')
+        response = { text : 'nan tu mens' }
+    
+    callSendAPI(sender_psid, response)
 }
 
 const callSendAPI = (sender_psid, response) => {
