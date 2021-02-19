@@ -7,11 +7,11 @@ const handleMessage = (sender_psid, received_msg) => {
     let response
     if (received_msg.text) {
         response = {
-            text : `You sent the message: "${received_msg.text}". Now send me an image!`
+            text : `tu a evoyer : "${received_msg.text}". Now send me an image!`
         }
     }
     else if (received_msg.attachments) {
-        response = {
+        /*response = {
             type : 'template',
             payload : {
                 template_type : 'generic',
@@ -30,6 +30,31 @@ const handleMessage = (sender_psid, received_msg) => {
                         payload : 'non',
                     }],
                 }]
+            }
+        }*/
+        response = {
+            "attachment": {
+                "type": "template",
+                "payload": {
+                    "template_type": "generic",
+                    "elements": [{
+                        "title": "Is this the right picture?",
+                        "subtitle": "Tap a button to answer.",
+                        "image_url": received_msg.attachments[0].payload.url,
+                        "buttons": [
+                        {
+                            "type": "postback",
+                            "title": "Yes!",
+                            "payload": "yes",
+                        },
+                        {
+                            "type": "postback",
+                            "title": "No!",
+                            "payload": "no",
+                        }
+                        ],
+                    }]
+                }
             }
         }
     }
