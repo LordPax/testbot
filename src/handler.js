@@ -38,15 +38,8 @@ const handleMessage = (sender_psid, received_msg) => {
 
 const handlePostback = (sender_psid, received_postback) => {
     const { payload } = received_postback
-    
-    const response = match(payload)
-    .case('good', () => ({ 
-        text : "c'est parfait"
-    }))
-    .case('notgood', () => ({ 
-        text : "dommage"
-    }))
-    .default(() => null)
+
+    const response = {}
     
     callSendAPI(sender_psid, response)
 }
